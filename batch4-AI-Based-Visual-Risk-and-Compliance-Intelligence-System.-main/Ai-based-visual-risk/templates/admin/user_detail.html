@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="mb-1">User Detail</h2>
+            <p class="text-muted mb-0">Overview for {{ user.username }}</p>
+        </div>
+        <a href="{{ url_for('admin_users') }}" class="btn btn-outline-primary">Back to Users</a>
+    </div>
+
+    <div class="row g-4 mb-4">
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body">
+                    <div class="text-muted small">Monthly Income</div>
+                    <h4 class="mt-2 mb-0">₹{{ '%.0f'|format(metrics.income) }}</h4>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body">
+                    <div class="text-muted small">Monthly Expenses</div>
+                    <h4 class="mt-2 mb-0">₹{{ '%.0f'|format(metrics.expenses) }}</h4>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body">
+                    <div class="text-muted small">Net</div>
+                    <h4 class="mt-2 mb-0">₹{{ '%.0f'|format(metrics.net) }}</h4>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body">
+                    <div class="text-muted small">GPA</div>
+                    <h4 class="mt-2 mb-0">{{ gpa.gpa }}</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <p><strong>Username:</strong> {{ user.username }}</p>
+                    <p><strong>Email:</strong> {{ user.email }}</p>
+                    <p><strong>Occupation:</strong> {{ user.occupation }}</p>
+                    <p><strong>Age:</strong> {{ user.age }}</p>
+                </div>
+                <div class="col-md-6">
+                    <p><strong>Monthly Savings:</strong> ₹{{ '%.0f'|format(user.savings) }}</p>
+                    <p><strong>Study Hours / Week:</strong> {{ user.study_hours_per_week }}</p>
+                    <p><strong>Fitness Hours / Week:</strong> {{ user.fitness_hours_per_week }}</p>
+                    <p><strong>Sleep Hours / Day:</strong> {{ user.sleep_hours_per_day }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-4 row g-4">
+        <div class="col-lg-6">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-header bg-white border-0">
+                    <h5 class="mb-0">Recent Transactions</h5>
+                </div>
+                <div class="card-body">
+                    {% if recent_transactions %}
+                    <ul class="list-group list-group-flush">
+                        {% for tx in recent_transactions %}
+                        <li class="list-group-item px-0">
+                            {{ tx.date }} — {{ tx.category }} — ₹{{ '%.0f'|format(tx.amount) }} ({{ tx.type }})
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    {% else %}
+                    <p class="text-muted mb-0">No transactions recorded.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-header bg-white border-0">
+                    <h5 class="mb-0">Recent Study Logs</h5>
+                </div>
+                <div class="card-body">
+                    {% if recent_study %}
+                    <ul class="list-group list-group-flush">
+                        {% for log in recent_study %}
+                        <li class="list-group-item px-0">
+                            {{ log.date }} — {{ log.subject }} — {{ log.hours }}h ({{ log.productivity_score }}%)
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    {% else %}
+                    <p class="text-muted mb-0">No study logs recorded.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
